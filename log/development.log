@@ -1,0 +1,338 @@
+  [1m[35m (3.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='Myhotel'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='Myhotel'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-09-02 07:27:08.918172', '2025-09-02 07:27:08.918175') RETURNING "key" /*application='Myhotel'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Myhotel'*/[0m
+Started GET "/" for 127.0.0.1 at 2025-09-02 12:57:56 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Myhotel'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/dev/.asdf/installs/ruby/3.3.0/lib/ruby/gems/3.3.0/gems/railties-8.0.2.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/dev/.asdf/installs/ruby/3.3.0/lib/ruby/gems/3.3.0/gems/railties-8.0.2.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.8ms | GC: 0.0ms)
+Completed 200 OK in 56ms (Views: 8.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2025-09-02 13:01:31 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Myhotel'*/[0m
+Processing by SplashController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering splash/index.html.erb within layouts/application
+  Rendered splash/index.html.erb within layouts/application (Duration: 0.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 26.4ms | GC: 0.0ms)
+Completed 200 OK in 103ms (Views: 39.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 1.2ms)
+
+
+Started GET "/assets/application-8b441ae0.css" for 127.0.0.1 at 2025-09-02 13:01:31 +0530
+Started GET "/" for 127.0.0.1 at 2025-09-02 13:06:42 +0530
+Processing by SplashController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering splash/index.html.erb within layouts/application
+  Rendered splash/index.html.erb within layouts/application (Duration: 0.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 19.9ms | GC: 0.0ms)
+Completed 200 OK in 43ms (Views: 22.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/roles" for 127.0.0.1 at 2025-09-02 13:06:48 +0530
+Processing by RoleSelectionController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering role_selection/index.html.erb within layouts/application
+  Rendered role_selection/index.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.2ms | GC: 0.0ms)
+Completed 200 OK in 15ms (Views: 5.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/roles" for 127.0.0.1 at 2025-09-02 13:11:48 +0530
+Processing by RoleSelectionController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering role_selection/index.html.erb within layouts/application
+  Rendered role_selection/index.html.erb within layouts/application (Duration: 30.3ms | GC: 29.1ms)
+  Rendered layout layouts/application.html.erb (Duration: 34.8ms | GC: 29.1ms)
+Completed 200 OK in 51ms (Views: 38.2ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 29.1ms)
+
+
+Started GET "/admin/login" for 127.0.0.1 at 2025-09-02 13:11:49 +0530
+Processing by Admin::AuthController#login as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering admin/auth/login.html.erb within layouts/application
+  Rendered admin/auth/login.html.erb within layouts/application (Duration: 5.4ms | GC: 1.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.4ms | GC: 1.2ms)
+Completed 200 OK in 22ms (Views: 8.2ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 1.2ms)
+
+
+Started POST "/admin/login" for 127.0.0.1 at 2025-09-02 13:12:11 +0530
+Processing by Admin::AuthController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "username"=>"admin", "password"=>"[FILTERED]", "commit"=>"Login as Admin"}
+Redirected to http://127.0.0.1:3000/admin/dashboard
+Completed 302 Found in 13ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/admin/dashboard" for 127.0.0.1 at 2025-09-02 13:12:11 +0530
+Processing by Admin::AuthController#dashboard as TURBO_STREAM
+  Rendering layout layouts/application.html.erb
+  Rendering admin/auth/dashboard.html.erb within layouts/application
+  Rendered admin/auth/dashboard.html.erb within layouts/application (Duration: 9.9ms | GC: 0.6ms)
+  Rendered layout layouts/application.html.erb (Duration: 10.7ms | GC: 0.6ms)
+Completed 500 Internal Server Error in 22ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.6ms)
+
+
+  
+ActionView::Template::Error (undefined method `strftime' for an instance of String)
+Caused by: NoMethodError (undefined method `strftime' for an instance of String)
+
+Information for: ActionView::Template::Error (undefined method `strftime' for an instance of String):
+    264:             <div class="session-info">
+    265:                 <strong>Session Information:</strong><br>
+    266:                 Logged in as: <strong><%= @admin_username %></strong><br>
+    267:                 Login time: <strong><%= @login_time&.strftime("%B %d, %Y at %I:%M %p") %></strong>
+    268:             </div>
+    269:         </div>
+    270:     </div>
+  
+app/views/admin/auth/dashboard.html.erb:267
+
+Information for cause: NoMethodError (undefined method `strftime' for an instance of String):
+  
+app/views/admin/auth/dashboard.html.erb:267
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Myhotel'*/[0m
+Migrating to CreateUsers (20250902074334)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='Myhotel'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar(50) NOT NULL, "email" varchar NOT NULL, "password_digest" varchar NOT NULL, "role" varchar DEFAULT 'customer' NOT NULL, "first_name" varchar(50) NOT NULL, "last_name" varchar(50) NOT NULL, "phone" varchar(20), "status" varchar DEFAULT 'active' NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='Myhotel'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_username" ON "users" ("username") /*application='Myhotel'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='Myhotel'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_users_on_role" ON "users" ("role") /*application='Myhotel'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_users_on_status" ON "users" ("status") /*application='Myhotel'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250902074334') RETURNING "version" /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mUser Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = 'john_doe' LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'john@example.com' LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("username", "email", "password_digest", "role", "first_name", "last_name", "phone", "status", "created_at", "updated_at") VALUES ('john_doe', 'john@example.com', '$2a$12$Sl57HvT0TLzrlKtlvazvdOeNi97NGdFKFIiLgLgwQjRfJGzc7M6o.', 'customer', 'John', 'Doe', '+1-555-0123', 'active', '2025-09-02 07:48:46.923500', '2025-09-02 07:48:46.923500') RETURNING "id" /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (4.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mUser Exists? (2.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = 'jane_chef' LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'jane@example.com' LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("username", "email", "password_digest", "role", "first_name", "last_name", "phone", "status", "created_at", "updated_at") VALUES ('jane_chef', 'jane@example.com', '$2a$12$ZBQStkxbc2J8dLJyt1G3ZOTqo4VcsOjFv.GmLhtoVFpNOtLGPPhF6', 'chef', 'Jane', 'Smith', '+1-555-0124', 'active', '2025-09-02 07:48:47.228976', '2025-09-02 07:48:47.228976') RETURNING "id" /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mUser Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = 'bob_cashier' LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'bob@example.com' LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("username", "email", "password_digest", "role", "first_name", "last_name", "phone", "status", "created_at", "updated_at") VALUES ('bob_cashier', 'bob@example.com', '$2a$12$/.4ss3DbaRnsfBaw7S/fl.y9lEJO//OmpJ9JEP1fL6IGbVOSnaloa', 'cashier', 'Bob', 'Johnson', NULL, 'active', '2025-09-02 07:48:47.535686', '2025-09-02 07:48:47.535686') RETURNING "id" /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mUser Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = 'alice_admin' LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'alice@example.com' LIMIT 1 /*application='Myhotel'*/[0m
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("username", "email", "password_digest", "role", "first_name", "last_name", "phone", "status", "created_at", "updated_at") VALUES ('alice_admin', 'alice@example.com', '$2a$12$zF9Ra1M.QUSuDC/tWkY0qu.GbUT4iyx20glSgHmUk.yl8kIDcQYde', 'admin', 'Alice', 'Wilson', '+1-555-0125', 'active', '2025-09-02 07:48:47.834219', '2025-09-02 07:48:47.834219') RETURNING "id" /*application='Myhotel'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='Myhotel'*/[0m
+  [1m[36mUser Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" /*application='Myhotel'*/[0m
+Started GET "/?id=5accc833-4a11-40a1-9cf1-b1181529e85a&vscodeBrowserReqId=1756799406060" for 127.0.0.1 at 2025-09-02 13:20:06 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Myhotel'*/[0m
+Processing by SplashController#index as HTML
+  Parameters: {"id"=>"5accc833-4a11-40a1-9cf1-b1181529e85a", "vscodeBrowserReqId"=>"1756799406060"}
+  Rendering layout layouts/application.html.erb
+  Rendering splash/index.html.erb within layouts/application
+  Rendered splash/index.html.erb within layouts/application (Duration: 1.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.3ms | GC: 0.0ms)
+Completed 200 OK in 18ms (Views: 7.2ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/" for ::1 at 2025-09-02 13:20:36 +0530
+Processing by SplashController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering splash/index.html.erb within layouts/application
+  Rendered splash/index.html.erb within layouts/application (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.7ms | GC: 0.0ms)
+Completed 200 OK in 23ms (Views: 4.4ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 1.5ms)
+
+
+Started GET "/assets/application-8b441ae0.css" for ::1 at 2025-09-02 13:20:36 +0530
+Started GET "/roles" for ::1 at 2025-09-02 13:20:41 +0530
+Processing by RoleSelectionController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering role_selection/index.html.erb within layouts/application
+  Rendered role_selection/index.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.5ms | GC: 0.0ms)
+Completed 200 OK in 13ms (Views: 5.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/login" for ::1 at 2025-09-02 13:20:45 +0530
+Processing by Admin::AuthController#login as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering admin/auth/login.html.erb within layouts/application
+  Rendered admin/auth/login.html.erb within layouts/application (Duration: 2.3ms | GC: 0.3ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.1ms | GC: 0.3ms)
+Completed 200 OK in 18ms (Views: 3.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.8ms)
+
+
+Started POST "/admin/login" for ::1 at 2025-09-02 13:21:05 +0530
+Processing by Admin::AuthController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "username"=>"admin", "password"=>"[FILTERED]", "commit"=>"Login as Admin"}
+Redirected to http://localhost:3000/admin/dashboard
+Completed 302 Found in 18ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 3.5ms)
+
+
+Started GET "/admin/dashboard" for ::1 at 2025-09-02 13:21:05 +0530
+Processing by Admin::AuthController#dashboard as TURBO_STREAM
+  Rendering layout layouts/application.html.erb
+  Rendering admin/auth/dashboard.html.erb within layouts/application
+  Rendered admin/auth/dashboard.html.erb within layouts/application (Duration: 8.9ms | GC: 6.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 9.7ms | GC: 6.0ms)
+Completed 500 Internal Server Error in 24ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 9.7ms)
+
+
+  
+ActionView::Template::Error (undefined method `strftime' for an instance of String)
+Caused by: NoMethodError (undefined method `strftime' for an instance of String)
+
+Information for: ActionView::Template::Error (undefined method `strftime' for an instance of String):
+    264:             <div class="session-info">
+    265:                 <strong>Session Information:</strong><br>
+    266:                 Logged in as: <strong><%= @admin_username %></strong><br>
+    267:                 Login time: <strong><%= @login_time&.strftime("%B %d, %Y at %I:%M %p") %></strong>
+    268:             </div>
+    269:         </div>
+    270:     </div>
+  
+app/views/admin/auth/dashboard.html.erb:267
+
+Information for cause: NoMethodError (undefined method `strftime' for an instance of String):
+  
+app/views/admin/auth/dashboard.html.erb:267
+Started GET "/admin/login" for ::1 at 2025-09-02 13:22:41 +0530
+Processing by Admin::AuthController#login as HTML
+Redirected to http://localhost:3000/admin/dashboard
+Completed 302 Found in 13ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 2.5ms)
+
+
+Started GET "/admin/dashboard" for ::1 at 2025-09-02 13:22:41 +0530
+Processing by Admin::AuthController#dashboard as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering admin/auth/dashboard.html.erb within layouts/application
+  Rendered admin/auth/dashboard.html.erb within layouts/application (Duration: 2.5ms | GC: 1.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 9.5ms | GC: 5.4ms)
+Completed 200 OK in 26ms (Views: 10.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 7.4ms)
+
+
+Started GET "/admin/users" for ::1 at 2025-09-02 13:22:45 +0530
+Processing by Admin::UsersController#index as HTML
+Completed 500 Internal Server Error in 30ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 1.2ms)
+
+
+  
+LoadError (cannot load such file -- bcrypt):
+  
+app/models/user.rb:2:in `<class:User>'
+app/models/user.rb:1:in `<main>'
+app/controllers/admin/users_controller.rb:6:in `index'
+Started GET "/" for 127.0.0.1 at 2025-09-02 13:24:18 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Myhotel'*/[0m
+Processing by SplashController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering splash/index.html.erb within layouts/application
+  Rendered splash/index.html.erb within layouts/application (Duration: 0.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 19.3ms | GC: 0.0ms)
+Completed 200 OK in 77ms (Views: 23.6ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/roles" for 127.0.0.1 at 2025-09-02 13:24:23 +0530
+Processing by RoleSelectionController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering role_selection/index.html.erb within layouts/application
+  Rendered role_selection/index.html.erb within layouts/application (Duration: 0.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.9ms | GC: 0.0ms)
+Completed 200 OK in 16ms (Views: 4.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/login" for 127.0.0.1 at 2025-09-02 13:24:26 +0530
+Processing by Admin::AuthController#login as HTML
+Redirected to http://127.0.0.1:3000/admin/dashboard
+Completed 302 Found in 17ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/dashboard" for 127.0.0.1 at 2025-09-02 13:24:26 +0530
+Processing by Admin::AuthController#dashboard as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering admin/auth/dashboard.html.erb within layouts/application
+  Rendered admin/auth/dashboard.html.erb within layouts/application (Duration: 1.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.6ms | GC: 0.0ms)
+Completed 200 OK in 19ms (Views: 3.2ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-09-02 13:24:28 +0530
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/controllers/admin/users_controller.rb:7:in `index'
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."status" = 'active' /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/controllers/admin/users_controller.rb:8:in `index'
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) AS "count_all", "users"."role" AS "users_role" FROM "users" GROUP BY "users"."role" ORDER BY "users"."username" ASC /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in `index'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/index.html.erb within layouts/application
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" LIMIT 1 /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/views/admin/users/index.html.erb:144
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."username" ASC /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/views/admin/users/index.html.erb:159
+  Rendered admin/users/index.html.erb within layouts/application (Duration: 41.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 44.7ms | GC: 0.0ms)
+Completed 200 OK in 104ms (Views: 44.6ms | ActiveRecord: 4.1ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/users/4/edit" for 127.0.0.1 at 2025-09-02 13:24:38 +0530
+Processing by Admin::UsersController#edit as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 4 LIMIT 1 /*action='edit',application='Myhotel',controller='users'*/[0m
+  ↳ app/controllers/admin/users_controller.rb:67:in `set_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/edit.html.erb within layouts/application
+  Rendered admin/users/edit.html.erb within layouts/application (Duration: 31.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 33.1ms | GC: 0.0ms)
+Completed 200 OK in 53ms (Views: 34.0ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/users/1/edit" for 127.0.0.1 at 2025-09-02 13:24:41 +0530
+Processing by Admin::UsersController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='edit',application='Myhotel',controller='users'*/[0m
+  ↳ app/controllers/admin/users_controller.rb:67:in `set_user'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/edit.html.erb within layouts/application
+  Rendered admin/users/edit.html.erb within layouts/application (Duration: 4.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.8ms | GC: 0.0ms)
+Completed 200 OK in 23ms (Views: 7.4ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-09-02 13:24:49 +0530
+Processing by Admin::UsersController#index as HTML
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/controllers/admin/users_controller.rb:7:in `index'
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."status" = 'active' /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/controllers/admin/users_controller.rb:8:in `index'
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) AS "count_all", "users"."role" AS "users_role" FROM "users" GROUP BY "users"."role" ORDER BY "users"."username" ASC /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/controllers/admin/users_controller.rb:9:in `index'
+  Rendering layout layouts/application.html.erb
+  Rendering admin/users/index.html.erb within layouts/application
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" LIMIT 1 /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/views/admin/users/index.html.erb:144
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."username" ASC /*action='index',application='Myhotel',controller='users'*/[0m
+  ↳ app/views/admin/users/index.html.erb:159
+  Rendered admin/users/index.html.erb within layouts/application (Duration: 43.5ms | GC: 31.7ms)
+  Rendered layout layouts/application.html.erb (Duration: 45.2ms | GC: 31.7ms)
+Completed 200 OK in 64ms (Views: 45.2ms | ActiveRecord: 1.3ms (5 queries, 0 cached) | GC: 31.7ms)
+
+
+Started GET "/admin/dashboard" for 127.0.0.1 at 2025-09-02 13:24:52 +0530
+Processing by Admin::AuthController#dashboard as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering admin/auth/dashboard.html.erb within layouts/application
+  Rendered admin/auth/dashboard.html.erb within layouts/application (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.8ms | GC: 0.0ms)
+Completed 200 OK in 15ms (Views: 2.4ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/admin/users" for 127.0.0.1 at 2025-09-02 13:25:08 +0530
+Processing by Admin::UsersController#index as */*
+Redirected to http://localhost:3000/admin/login
+Filter chain halted as :check_admin_session rendered or redirected
+Completed 302 Found in 14ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
