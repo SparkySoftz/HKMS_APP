@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard - HKMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        .dashboard-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .dashboard-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .alert-card {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .success-card {
+            border-left: 4px solid #28a745;
+        }
+        
+        .warning-card {
+            border-left: 4px solid #ffc107;
+        }
+        
+        .info-card {
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .action-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .action-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .alerts-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .alert-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        
+        .alert-expired {
+            border-left-color: #dc3545;
+        }
+        
+        .alert-expiring {
+            border-left-color: #ffc107;
+        }
+        
+        .alert-low-stock {
+            border-left-color: #fd7e14;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .alert-details {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-danger {
+            background: #dc3545;
+        }
+        
+        .badge-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-info {
+            background: #17a2b8;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-title {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">
+                <i class="fas fa-user-tie"></i> Manager Dashboard
+            </h1>
+            <p class="dashboard-subtitle">Menu Management & Inventory Overview</p>
+        </div>
+        
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card alert-card">
+                <div class="stat-header">
+                    <span class="stat-title">Critical Alerts</span>
+                    <i class="fas fa-exclamation-triangle stat-icon"></i>
+                </div>
+                <div class="stat-value"><%= @alerts_count %></div>
+                <div class="stat-description">Items requiring immediate attention</div>
+            </div>
+            
+            <div class="stat-card warning-card">
+                <div class="stat-header">
+                    <span class="stat-title">Expiring Soon</span>
+                    <i class="fas fa-clock stat-icon"></i>
+                </div>
+                <div class="stat-value"><%= @expiring_items.count %></div>
+                <div class="stat-description">Items expiring in 3 days</div>
+            </div>
+            
+            <div class="stat-card success-card">
+                <div class="stat-header">
+                    <span class="stat-title">Available Items</span>
+                    <i class="fas fa-check-circle stat-icon"></i>
+                </div>
+                <div class="stat-value"><%= @available_items.count %></div>
+                <div class="stat-description">Fresh inventory items</div>
+            </div>
+            
+            <div class="stat-card info-card">
+                <div class="stat-header">
+                    <span class="stat-title">Today's Menu</span>
+                    <i class="fas fa-utensils stat-icon"></i>
+                </div>
+                <div class="stat-value"><%= @today_menu.count %></div>
+                <div class="stat-description">Active menu items</div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="<%= new_menu_item_path %>" class="action-card">
+                <i class="fas fa-plus-circle action-icon"></i>
+                <div class="action-title">Create Menu Item</div>
+                <div class="action-description">Add new dishes to the menu</div>
+            </a>
+            
+            <a href="<%= menu_items_path %>" class="action-card">
+                <i class="fas fa-list action-icon"></i>
+                <div class="action-title">Manage Menu</div>
+                <div class="action-description">View and edit menu items</div>
+            </a>
+            
+            <a href="<%= manager_inventory_path %>" class="action-card">
+                <i class="fas fa-boxes action-icon"></i>
+                <div class="action-title">View Inventory</div>
+                <div class="action-description">Check ingredient availability</div>
+            </a>
+            
+            <a href="<%= storekeeper_index_path %>" class="action-card">
+                <i class="fas fa-warehouse action-icon"></i>
+                <div class="action-title">Storekeeper Panel</div>
+                <div class="action-description">Manage transactions</div>
+            </a>
+        </div>
+        
+        <!-- Alerts Section -->
+        <% if @alerts_count > 0 %>
+            <div class="alerts-section">
+                <h3><i class="fas fa-bell"></i> Inventory Alerts</h3>
+                
+                <% @expired_items.each do |item| %>
+                    <div class="alert-item alert-expired">
+                        <div class="alert-content">
+                            <div class="alert-title"><%= item.name %></div>
+                            <div class="alert-details">
+                                Expired <%= (-item.days_to_expiry).abs %> days ago | 
+                                Quantity: <%= item.quantity %> <%= item.unit %> | 
+                                Supplier: <%= item.supplier.name %>
+                            </div>
+                        </div>
+                        <span class="badge badge-danger">EXPIRED</span>
+                    </div>
+                <% end %>
+                
+                <% @expiring_items.each do |item| %>
+                    <div class="alert-item alert-expiring">
+                        <div class="alert-content">
+                            <div class="alert-title"><%= item.name %></div>
+                            <div class="alert-details">
+                                Expires in <%= item.days_to_expiry %> days | 
+                                Quantity: <%= item.quantity %> <%= item.unit %> | 
+                                Supplier: <%= item.supplier.name %>
+                            </div>
+                        </div>
+                        <span class="badge badge-warning">EXPIRING</span>
+                    </div>
+                <% end %>
+                
+                <% @low_stock_items.each do |item| %>
+                    <div class="alert-item alert-low-stock">
+                        <div class="alert-content">
+                            <div class="alert-title"><%= item.name %></div>
+                            <div class="alert-details">
+                                Low stock: <%= item.quantity %> <%= item.unit %> remaining | 
+                                Expires: <%= item.expiry_date.strftime("%B %d, %Y") %>
+                            </div>
+                        </div>
+                        <span class="badge badge-info">LOW STOCK</span>
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+</body>
+</html>

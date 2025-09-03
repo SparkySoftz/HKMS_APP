@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status - HKMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: white;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        .header-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .table-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .status-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .status-tracker::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 1;
+        }
+        
+        .status-step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .status-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .status-active .status-icon {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+        
+        .status-completed .status-icon {
+            background: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+        
+        .order-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .order-number {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .order-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            color: #ffc107;
+        }
+        
+        .status-cooking {
+            background: rgba(23, 162, 184, 0.2);
+            border: 1px solid rgba(23, 162, 184, 0.5);
+            color: #17a2b8;
+        }
+        
+        .status-ready {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid rgba(40, 167, 69, 0.5);
+            color: #28a745;
+        }
+        
+        .order-items {
+            margin-bottom: 1rem;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .order-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: right;
+            margin: 1rem 0;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .action-section {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(45deg, #ffc107, #e0a800);
+            border: none;
+            color: #212529;
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+        
+        .notification {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .status-tracker {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .status-tracker::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="header-title">
+                <i class="fas fa-concierge-bell"></i> Order Status
+            </h1>
+            <div class="table-info">
+                <i class="fas fa-chair"></i> <%= @table.display_name %> | 
+                <i class="fas fa-user"></i> <%= session[:customer_name] %>
+            </div>
+        </div>
+        
+        <% if notice %>
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> <%= notice %>
+            </div>
+        <% end %>
+        
+        <% if @current_order %>
+            <!-- Status Tracker -->
+            <div class="status-tracker">
+                <div class="status-step <%= 'status-completed' if @current_order.status != 'pending' %>">
+                    <div class="status-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="status-label">Order Placed</div>
+                </div>
+                
+                <div class="status-step <%= 'status-active' if @current_order.status == 'cooking' %> <%= 'status-completed' if @current_order.status.in?(['ready', 'completed']) %>">
+                    <div class="status-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="status-label">Cooking</div>
+                </div>
+                
+                <div class="status-step <%= 'status-active' if @current_order.status == 'ready' %> <%= 'status-completed' if @current_order.status == 'completed' %>">
+                    <div class="status-icon">
+                        <i class="fas fa-concierge-bell"></i>
+                    </div>
+                    <div class="status-label">Ready</div>
+                </div>
+                
+                <div class="status-step <%= 'status-completed' if @current_order.status == 'completed' %>">
+                    <div class="status-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="status-label">Completed</div>
+                </div>
+            </div>
+            
+            <!-- Order Details -->
+            <div class="order-details">
+                <div class="order-header">
+                    <div class="order-number"><%= @current_order.order_number %></div>
+                    <div class="order-status <%= "status-#{@current_order.status}" %>">
+                        <%= @current_order.status.humanize %>
+                    </div>
+                </div>
+                
+                <div class="order-items">
+                    <% @order_items.each do |item| %>
+                        <div class="order-item">
+                            <span><%= item.quantity %>x <%= item.menu_item.name %></span>
+                            <span>LKR <%= item.subtotal %></span>
+                        </div>
+                    <% end %>
+                </div>
+                
+                <div class="order-total">
+                    Total: LKR <%= @current_order.total_amount %>
+                </div>
+                
+                <div class="order-timestamp">
+                    Ordered at: <%= @current_order.order_date.strftime("%H:%M") %>
+                </div>
+            </div>
+            
+            <!-- Action Section -->
+            <div class="action-section">
+                <% if @current_order.status == 'ready' %>
+                    <div class="notification pulse">
+                        <i class="fas fa-bell"></i> Your order is ready for pickup!
+                    </div>
+                    <a href="<%= customer_feedback_path(@current_order.id) %>" class="btn btn-success">
+                        <i class="fas fa-star"></i> Give Feedback & Complete Order
+                    </a>
+                <% elsif @current_order.status == 'completed' %>
+                    <div class="notification">
+                        <i class="fas fa-check-circle"></i> Thank you for your order!
+                    </div>
+                    <a href="<%= customer_menu_path %>" class="btn btn-primary">
+                        <i class="fas fa-utensils"></i> Order Again
+                    </a>
+                <% else %>
+                    <div class="notification">
+                        <i class="fas fa-info-circle"></i> Your order is being processed. Please wait.
+                    </div>
+                    <button class="btn btn-warning" onclick="refreshStatus()">
+                        <i class="fas fa-sync"></i> Refresh Status
+                    </button>
+                <% end %>
+            </div>
+        <% else %>
+            <div class="text-center">
+                <i class="fas fa-concierge-bell fa-3x mb-3"></i>
+                <p>No active order found.</p>
+                <a href="<%= customer_menu_path %>" class="btn btn-primary">
+                    <i class="fas fa-utensils"></i> Place New Order
+                </a>
+            </div>
+        <% end %>
+    </div>
+    <script>
+        // Auto-refresh status every 30 seconds
+        let refreshInterval;
+        
+        function startAutoRefresh() {
+            refreshInterval = setInterval(function() {
+                fetch(window.location.href, {
+                    headers: {
+                        'Accept': 'text/html',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    // Create a temporary DOM element to parse the response
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Update the order status section
+                    const newStatusSection = doc.querySelector('.order-details');
+                    const currentStatusSection = document.querySelector('.order-details');
+                    if (newStatusSection && currentStatusSection) {
+                        currentStatusSection.innerHTML = newStatusSection.innerHTML;
+                    }
+                    
+                    // Update the status tracker
+                    const newTracker = doc.querySelector('.status-tracker');
+                    const currentTracker = document.querySelector('.status-tracker');
+                    if (newTracker && currentTracker) {
+                        currentTracker.innerHTML = newTracker.innerHTML;
+                    }
+                    
+                    // Check if order is ready or completed to stop auto-refresh
+                    const orderStatus = doc.querySelector('.order-status');
+                    if (orderStatus && (orderStatus.classList.contains('status-ready') || orderStatus.classList.contains('status-completed'))) {
+                        stopAutoRefresh();
+                        // Show notification for ready orders
+                        if (orderStatus.classList.contains('status-ready')) {
+                            showNotification('Your order is ready for pickup!');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Auto-refresh error:', error);
+                });
+            }, 30000); // Refresh every 30 seconds
+        }
+        
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        }
+        
+        function refreshStatus() {
+            location.reload();
+        }
+        
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification pulse';
+            notification.innerHTML = `<i class="fas fa-bell"></i> ${message}`;
+            
+            // Insert before action section
+            const actionSection = document.querySelector('.action-section');
+            actionSection.parentNode.insertBefore(notification, actionSection);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+        
+        // Start auto-refresh when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only start auto-refresh if order is not completed
+            const orderStatus = document.querySelector('.order-status');
+            if (orderStatus && !orderStatus.classList.contains('status-completed')) {
+                startAutoRefresh();
+            }
+        });
+        
+        // Clean up interval when page is unloaded
+        window.addEventListener('beforeunload', function() {
+            stopAutoRefresh();
+        });
+    </script>
+</body>
+</html>

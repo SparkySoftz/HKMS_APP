@@ -1,0 +1,71 @@
+<div class="storekeeper-panel">
+  <h1>Storekeeper Transactions</h1>
+
+  <div class="suppliers-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h2>Suppliers</h2>
+      <%= link_to 'Manage Suppliers', suppliers_path, class: 'btn btn-info', style: 'margin-left: auto;' %>
+    </div>
+    <% if @suppliers.any? %>
+      <table class="suppliers-table">
+        <thead>
+          <tr>
+            <th>Supplier Code</th>
+            <th>Name</th>
+            <th>Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @suppliers.each do |supplier| %>
+            <tr>
+              <td><%= supplier.supplier_code %></td>
+              <td><%= supplier.name %></td>
+              <td>
+                <p>Phone: <%= supplier.phone_number %></p>
+                <p>Email: <%= supplier.email %></p>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No suppliers found.</p>
+    <% end %>
+  </div>
+
+  <div class="transactions-section">
+    <h2>All Transactions</h2>
+    <%= link_to 'New Transaction', new_storekeeper_path, class: 'btn btn-primary' %>
+
+    <% if @transactions.any? %>
+      <table class="transactions-table">
+        <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Supplier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @transactions.each do |transaction| %>
+            <tr>
+              <td><%= transaction.transaction_id %></td>
+              <td><%= transaction.date %></td>
+              <td><%= transaction.time.strftime("%H:%M") %></td>
+              <td><%= transaction.item %></td>
+              <td><%= transaction.quantity %></td>
+              <td><%= transaction.unit %></td>
+              <td><%= transaction.supplier.name %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No transactions found.</p>
+    <% end %>
+  </div>
+</div>

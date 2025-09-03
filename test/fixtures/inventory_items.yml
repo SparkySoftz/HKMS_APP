@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  quantity: 1
+  unit: MyString
+  expiry_date: 2025-09-02
+  supplier: one
+  created_by: MyString
+
+two:
+  name: MyString
+  quantity: 1
+  unit: MyString
+  expiry_date: 2025-09-02
+  supplier: two
+  created_by: MyString

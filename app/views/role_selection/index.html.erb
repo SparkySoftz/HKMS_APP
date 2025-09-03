@@ -170,10 +170,10 @@
                 <div class="role-description">Manage kitchen and food orders</div>
             </div>
             
-            <div class="role-card accountant-card" onclick="selectRole('accountant')">
-                <i class="fas fa-calculator role-icon"></i>
-                <div class="role-title">Accountant</div>
-                <div class="role-description">Financial management and reporting</div>
+            <div class="role-card accountant-card" onclick="selectRole('manager')">
+                <i class="fas fa-user-tie role-icon"></i>
+                <div class="role-title">Manager</div>
+                <div class="role-description">Menu management and inventory oversight</div>
             </div>
             
             <div class="role-card storekeeper-card" onclick="selectRole('store_keeper')">
@@ -200,6 +200,12 @@
                 if (role === 'admin') {
                     // Redirect to admin login for authentication
                     window.location.href = '/admin/login';
+                } else if (role === 'store_keeper') {
+                    // Redirect to storekeeper dashboard
+                    window.location.href = '/storekeeper';
+                } else if (role === 'manager') {
+                    // Redirect to manager dashboard for menu management
+                    window.location.href = '/manager/dashboard';
                 } else {
                     // For other roles, show alert for now
                     alert(`Selected role: ${role.replace('_', ' ').toUpperCase()}\n\nThis will be implemented soon!`);

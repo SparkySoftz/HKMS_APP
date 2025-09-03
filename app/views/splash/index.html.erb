@@ -85,6 +85,36 @@
             }
         }
         
+        /* Button Styles */
+        .continue-button {
+            margin-top: 3rem;
+        }
+        
+        .continue-button a {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .continue-button a:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        
+        .continue-button a:active {
+            transform: translateY(0);
+        }
+        
         @media (max-width: 768px) {
             .welcome-text {
                 font-size: 2.5rem;
@@ -102,6 +132,11 @@
             .time {
                 font-size: 1.5rem;
             }
+            
+            .continue-button a {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -113,41 +148,31 @@
             <div class="date" id="current-date"></div>
             <div class="time" id="current-time"></div>
         </div>
+        <div class="continue-button">
+            <%= link_to 'Continue', roles_path %>
+        </div>
     </div>
-    
+
     <script>
+        // Update date and time
         function updateDateTime() {
             const now = new Date();
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
             
-            const dateOptions = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            
-            const timeOptions = {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            
-            document.getElementById('current-date').textContent = 
-                now.toLocaleDateString('en-US', dateOptions);
-            
-            document.getElementById('current-time').textContent = 
-                now.toLocaleTimeString('en-US', timeOptions);
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', dateOptions);
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US', timeOptions);
         }
         
-        // Update immediately
+        // Initial update
         updateDateTime();
         
         // Update every second
         setInterval(updateDateTime, 1000);
         
-        // Auto-redirect to role selection after 5 seconds
+        // Automatically redirect after 5 seconds
         setTimeout(function() {
-            window.location.href = '/roles';
+            window.location.href = '<%= roles_path %>';
         }, 5000);
     </script>
 </body>

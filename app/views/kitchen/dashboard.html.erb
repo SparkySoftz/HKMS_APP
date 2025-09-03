@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Dashboard - HKMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .orders-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .order-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .order-number {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .order-table {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .order-items {
+            margin-bottom: 1rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .order-timestamp {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-bottom: 1rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .btn-info {
+            background: linear-gradient(45deg, #17a2b8, #138496);
+            border: none;
+        }
+        
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(23, 162, 184, 0.4);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(45deg, #ffc107, #e0a800);
+            border: none;
+            color: #212529;
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge-pending {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            color: #ffc107;
+        }
+        
+        .badge-cooking {
+            background: rgba(23, 162, 184, 0.2);
+            border: 1px solid rgba(23, 162, 184, 0.5);
+            color: #17a2b8;
+        }
+        
+        .badge-ready {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid rgba(40, 167, 69, 0.5);
+            color: #28a745;
+        }
+        
+        .no-orders {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">
+                <i class="fas fa-fire"></i> Kitchen Dashboard
+            </h1>
+            <div class="timestamp">
+                <%= Time.current.strftime("%A, %B %d, %Y") %>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>Pending Orders</div>
+                <div class="stat-value"><%= @pending_orders.count %></div>
+                <div class="text-warning"><i class="fas fa-clock"></i></div>
+            </div>
+            
+            <div class="stat-card">
+                <div>Cooking Orders</div>
+                <div class="stat-value"><%= @cooking_orders.count %></div>
+                <div class="text-info"><i class="fas fa-fire"></i></div>
+            </div>
+            
+            <div class="stat-card">
+                <div>Ready Orders</div>
+                <div class="stat-value"><%= @ready_orders.count %></div>
+                <div class="text-success"><i class="fas fa-check-circle"></i></div>
+            </div>
+            
+            <div class="stat-card">
+                <div>Completed Today</div>
+                <div class="stat-value"><%= @completed_today %></div>
+                <div class="text-primary"><i class="fas fa-utensils"></i></div>
+            </div>
+        </div>
+        
+        <!-- Pending Orders Section -->
+        <div class="orders-section">
+            <h2 class="section-title">
+                <i class="fas fa-clock text-warning"></i> Pending Orders (<%= @pending_orders.count %>)
+            </h2>
+            
+            <% if @pending_orders.any? %>
+                <div class="orders-grid">
+                    <% @pending_orders.each do |order| %>
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="order-number"><%= order.order_number %></div>
+                                <div class="order-table">Table <%= order.table.table_number %></div>
+                            </div>
+                            
+                            <div class="order-items">
+                                <% order.order_items.includes(:menu_item).each do |item| %>
+                                    <div class="order-item">
+                                        <span><%= item.quantity %>x <%= item.menu_item.name %></span>
+                                        <span>LKR <%= item.subtotal %></span>
+                                    </div>
+                                <% end %>
+                            </div>
+                            
+                            <div class="order-timestamp">
+                                Ordered: <%= order.order_date.strftime("%H:%M") %>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewOrderDetails(<%= order.id %>)">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn btn-warning" onclick="startCooking(<%= order.id %>)">
+                                    <i class="fas fa-fire"></i> Start Cooking
+                                </button>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            <% else %>
+                <div class="no-orders">
+                    <i class="fas fa-check-circle fa-2x mb-2"></i>
+                    <p>No pending orders at the moment</p>
+                </div>
+            <% end %>
+        </div>
+        
+        <!-- Cooking Orders Section -->
+        <div class="orders-section">
+            <h2 class="section-title">
+                <i class="fas fa-fire text-info"></i> Cooking Orders (<%= @cooking_orders.count %>)
+            </h2>
+            
+            <% if @cooking_orders.any? %>
+                <div class="orders-grid">
+                    <% @cooking_orders.each do |order| %>
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="order-number"><%= order.order_number %></div>
+                                <div class="order-table">Table <%= order.table.table_number %></div>
+                            </div>
+                            
+                            <div class="order-items">
+                                <% order.order_items.includes(:menu_item).each do |item| %>
+                                    <div class="order-item">
+                                        <span><%= item.quantity %>x <%= item.menu_item.name %></span>
+                                        <span>LKR <%= item.subtotal %></span>
+                                    </div>
+                                <% end %>
+                            </div>
+                            
+                            <div class="order-timestamp">
+                                Started: <%= order.updated_at.strftime("%H:%M") %>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewOrderDetails(<%= order.id %>)">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn btn-success" onclick="markReady(<%= order.id %>)">
+                                    <i class="fas fa-check"></i> Ready
+                                </button>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            <% else %>
+                <div class="no-orders">
+                    <i class="fas fa-fire fa-2x mb-2"></i>
+                    <p>No orders currently being cooked</p>
+                </div>
+            <% end %>
+        </div>
+        
+        <!-- Ready Orders Section -->
+        <div class="orders-section">
+            <h2 class="section-title">
+                <i class="fas fa-check-circle text-success"></i> Ready Orders (<%= @ready_orders.count %>)
+            </h2>
+            
+            <% if @ready_orders.any? %>
+                <div class="orders-grid">
+                    <% @ready_orders.each do |order| %>
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="order-number"><%= order.order_number %></div>
+                                <div class="order-table">Table <%= order.table.table_number %></div>
+                            </div>
+                            
+                            <div class="order-items">
+                                <% order.order_items.includes(:menu_item).each do |item| %>
+                                    <div class="order-item">
+                                        <span><%= item.quantity %>x <%= item.menu_item.name %></span>
+                                        <span>LKR <%= item.subtotal %></span>
+                                    </div>
+                                <% end %>
+                            </div>
+                            
+                            <div class="order-timestamp">
+                                Ready: <%= order.updated_at.strftime("%H:%M") %>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn btn-info" onclick="viewOrderDetails(<%= order.id %>)">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            <% else %>
+                <div class="no-orders">
+                    <i class="fas fa-concierge-bell fa-2x mb-2"></i>
+                    <p>No orders ready for pickup</p>
+                </div>
+            <% end %>
+        </div>
+    </div>
+    
+    <script>
+        // Auto-refresh dashboard every 30 seconds
+        let refreshInterval;
+        
+        function startAutoRefresh() {
+            refreshInterval = setInterval(function() {
+                location.reload();
+            }, 30000); // Refresh every 30 seconds
+        }
+        
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        }
+        
+        function viewOrderDetails(orderId) {
+            // In a real implementation, this would open a modal with order details
+            alert('Viewing order details for order #' + orderId);
+        }
+        
+        function startCooking(orderId) {
+            if (confirm('Start cooking this order?')) {
+                fetch('/kitchen/start_cooking/' + orderId, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert('Failed to update order status: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while updating the order status.');
+                });
+            }
+        }
+        
+        function markReady(orderId) {
+            if (confirm('Mark this order as ready?')) {
+                fetch('/kitchen/mark_ready/' + orderId, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert('Failed to update order status: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while updating the order status.');
+                });
+            }
+        }
+        
+        // Start auto-refresh when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            startAutoRefresh();
+        });
+        
+        // Clean up interval when page is unloaded
+        window.addEventListener('beforeunload', function() {
+            stopAutoRefresh();
+        });
+    </script>
+</body>
+</html>

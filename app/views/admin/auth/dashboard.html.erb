@@ -6,6 +6,7 @@
     <title>Admin Dashboard - HKMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -150,6 +151,114 @@
             text-align: center;
         }
         
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .recent-users {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .recent-users h3 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .user-table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .user-table th {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        .user-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-role {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .role-admin { background: rgba(255, 215, 0, 0.3); }
+        .role-customer { background: rgba(76, 175, 80, 0.3); }
+        .role-chef { background: rgba(33, 150, 243, 0.3); }
+        .role-cashier { background: rgba(156, 39, 176, 0.3); }
+        .role-accountant { background: rgba(255, 152, 0, 0.3); }
+        .role-store_keeper { background: rgba(121, 85, 72, 0.3); }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .chart-container h3 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .revenue-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .revenue-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .revenue-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #4CAF50;
+        }
+        
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -192,6 +301,10 @@
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
+            
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+            }
         }
     </style>
 </head>
@@ -228,9 +341,96 @@
             
             <div class="welcome-section">
                 <h2>Welcome, Administrator!</h2>
-                <p>Your HKMS Admin Dashboard is ready for configuration</p>
+                <p>System Overview & Monitoring Dashboard</p>
             </div>
             
+            <!-- Revenue Statistics -->
+            <div class="revenue-stats">
+                <div class="revenue-card">
+                    <div class="revenue-amount">$<%= sprintf('%.2f', @total_revenue) %></div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+                <div class="revenue-card">
+                    <div class="revenue-amount">$<%= sprintf('%.2f', @recent_revenue) %></div>
+                    <div class="stat-label">7-Day Revenue</div>
+                </div>
+            </div>
+            
+            <!-- System Statistics -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number"><%= @total_users %></div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><%= @active_users %></div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><%= @total_orders %></div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number"><%= @active_orders %></div>
+                    <div class="stat-label">Active Orders</div>
+                </div>
+            </div>
+            
+            <!-- User Distribution by Role -->
+            <div class="recent-users">
+                <h3><i class="fas fa-users me-2"></i>User Distribution by Role</h3>
+                <div class="stats-container">
+                    <% @users_by_role.each do |role, count| %>
+                        <div class="stat-card">
+                            <div class="stat-number"><%= count %></div>
+                            <div class="stat-label"><%= role.humanize %></div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+            
+            <!-- Order Status Distribution -->
+            <div class="chart-container">
+                <h3><i class="fas fa-chart-pie me-2"></i>Order Status Distribution</h3>
+                <canvas id="orderStatusChart"></canvas>
+            </div>
+            
+            <!-- Recent Users -->
+            <div class="recent-users">
+                <h3><i class="fas fa-user-clock me-2"></i>Recent User Registrations</h3>
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Registered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @recent_users.each do |user| %>
+                            <tr>
+                                <td><%= user.username %></td>
+                                <td><%= user.full_name %></td>
+                                <td>
+                                    <span class="user-role role-<%= user.role.gsub('_', '') %>">
+                                        <%= user.display_role %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge <%= user.active? ? 'bg-success' : 'bg-secondary' %>">
+                                        <%= user.status.capitalize %>
+                                    </span>
+                                </td>
+                                <td><%= user.created_at.strftime("%b %d, %Y") %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Management Cards -->
             <div class="dashboard-grid">
                 <a href="<%= admin_users_path %>" class="dashboard-card text-decoration-none text-white">
                     <i class="fas fa-users card-icon"></i>
@@ -246,12 +446,12 @@
                     <div class="coming-soon">Coming Soon</div>
                 </div>
                 
-                <div class="dashboard-card">
+                <a href="<%= admin_analytics_path %>" class="dashboard-card text-decoration-none text-white">
                     <i class="fas fa-chart-bar card-icon"></i>
                     <div class="card-title">Analytics & Reports</div>
                     <div class="card-description">View system analytics and reports</div>
-                    <div class="coming-soon">Coming Soon</div>
-                </div>
+                    <div class="bg-success text-white px-3 py-1 rounded mt-2 d-inline-block">Available</div>
+                </a>
                 
                 <div class="dashboard-card">
                     <i class="fas fa-cogs card-icon"></i>
@@ -270,5 +470,88 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize charts when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeOrderStatusChart();
+        });
+        
+        function initializeOrderStatusChart() {
+            const ctx = document.getElementById('orderStatusChart').getContext('2d');
+            
+            // Prepare data for the chart
+            const statusLabels = [];
+            const statusData = [];
+            const statusColors = [];
+            
+            // Define colors for each status
+            const colors = {
+                'pending': '#FFA726',
+                'cooking': '#42A5F5',
+                'ready': '#66BB6A',
+                'completed': '#26C6DA',
+                'cancelled': '#EF5350'
+            };
+            
+            // Get order status data from Ruby
+            const orderStatusData = {
+                <% @orders_by_status.each do |status, count| %>
+                    '<%= status %>': <%= count %>,
+                <% end %>
+            };
+            
+            // Populate arrays for chart
+            for (const [status, count] of Object.entries(orderStatusData)) {
+                statusLabels.push(status.charAt(0).toUpperCase() + status.slice(1));
+                statusData.push(count);
+                statusColors.push(colors[status] || '#9E9E9E');
+            }
+            
+            // If no data, show a message
+            if (statusLabels.length === 0) {
+                statusLabels.push('No Orders');
+                statusData.push(1);
+                statusColors.push('#9E9E9E');
+            }
+            
+            // Create the chart
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: statusLabels,
+                    datasets: [{
+                        data: statusData,
+                        backgroundColor: statusColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: 'white',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>

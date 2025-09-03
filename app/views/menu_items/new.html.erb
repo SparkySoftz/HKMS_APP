@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Menu Item - HKMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+            color: white;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .form-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .form-select {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: #333;
+        }
+        
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .alert {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+        
+        .button-group {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .form-hint {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.25rem;
+        }
+        
+        .ingredients-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .available-ingredients {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .ingredient-tag {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .ingredient-tag:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .ingredient-tag.selected {
+            background: #28a745;
+            border-color: #28a745;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .form-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1 class="form-title">
+                <i class="fas fa-utensils"></i> Create Menu Item
+            </h1>
+
+            <%= form_with model: @menu_item, local: true do |form| %>
+                <% if @menu_item.errors.any? %>
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-exclamation-triangle"></i> <%= pluralize(@menu_item.errors.count, "error") %> prohibited this menu item from being saved:</h5>
+                        <ul class="mb-0">
+                            <% @menu_item.errors.each do |error| %>
+                                <li><%= error.full_message %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <%= form.label :name, "Dish Name", class: "form-label" %>
+                            <%= form.text_field :name, class: "form-control", placeholder: "e.g., Chicken Fried Rice", required: true %>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <%= form.label :price, "Price (LKR)", class: "form-label" %>
+                            <%= form.number_field :price, class: "form-control", step: 0.01, min: 0, placeholder: "850.00", required: true %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <%= form.label :description, class: "form-label" %>
+                    <%= form.text_area :description, class: "form-control", rows: 3, placeholder: "Describe the dish..." %>
+                </div>
+
+                <div class="form-group">
+                    <div class="ingredients-section">
+                        <%= form.label :ingredients, "Ingredients", class: "form-label" %>
+                        <%= form.text_area :ingredients, class: "form-control", rows: 2, 
+                            placeholder: "Enter ingredients separated by commas (e.g., Rice, Chicken, Onions, Eggs)", 
+                            id: "ingredients_field" %>
+                        <div class="form-hint">Click on available ingredients below to add them</div>
+                        
+                        <div class="available-ingredients">
+                            <% @available_ingredients.each do |ingredient| %>
+                                <span class="ingredient-tag" onclick="addIngredient('<%= ingredient %>')">
+                                    <%= ingredient %>
+                                </span>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <%= form.label :menu_date, "Menu Date", class: "form-label" %>
+                            <%= form.date_field :menu_date, class: "form-control", value: Date.current, required: true %>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <%= form.label :status, class: "form-label" %>
+                            <%= form.select :status, 
+                                options_for_select([
+                                    ['Draft (Not visible to customers)', 'draft'],
+                                    ['Active (Available for order)', 'active'],
+                                    ['Inactive (Temporarily unavailable)', 'inactive']
+                                ], 'active'), 
+                                {}, 
+                                { class: "form-select" } %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <%= form.submit "Create Menu Item", class: "btn btn-success" %>
+                    <%= link_to "Cancel", manager_dashboard_path, class: "btn btn-secondary" %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+
+    <script>
+        function addIngredient(ingredient) {
+            const field = document.getElementById('ingredients_field');
+            const currentValue = field.value.trim();
+            
+            // Check if ingredient already exists
+            const ingredients = currentValue.split(',').map(i => i.trim());
+            if (ingredients.includes(ingredient)) {
+                return; // Don't add duplicates
+            }
+            
+            // Add ingredient
+            if (currentValue === '') {
+                field.value = ingredient;
+            } else {
+                field.value = currentValue + ', ' + ingredient;
+            }
+            
+            // Visual feedback
+            event.target.classList.add('selected');
+            setTimeout(() => {
+                event.target.classList.remove('selected');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

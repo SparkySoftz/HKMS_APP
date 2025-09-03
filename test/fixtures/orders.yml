@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  table: one
+  customer_name: MyString
+  status: MyString
+  total_amount: 9.99
+  order_date: 2025-09-02 22:46:15
+
+two:
+  table: two
+  customer_name: MyString
+  status: MyString
+  total_amount: 9.99
+  order_date: 2025-09-02 22:46:15

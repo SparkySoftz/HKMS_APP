@@ -31,7 +31,7 @@ class Admin::AuthController < ApplicationController
   end
   
   def dashboard
-    # Empty admin dashboard - user will add content later
+    # Admin dashboard with comprehensive system monitoring
     @admin_username = session[:admin_username]
     # Convert login_time string back to Time object if it exists
     begin
@@ -40,6 +40,35 @@ class Admin::AuthController < ApplicationController
       # If parsing fails, set to current time as fallback
       @login_time = Time.current
     end
+    
+    # System statistics for admin monitoring
+    @total_users = User.count
+    @active_users = User.active.count
+    @users_by_role = User.group(:role).count
+    @recent_users = User.order(created_at: :desc).limit(5)
+    
+    # Order statistics
+    @total_orders = Order.count
+    @active_orders = Order.active.count
+    @orders_by_status = Order.group(:status).count
+    @recent_orders = Order.order(created_at: :desc).limit(5)
+    
+    # Menu statistics
+    @total_menu_items = MenuItem.count
+    @active_menu_items = MenuItem.active.count
+    
+    # Table statistics
+    @total_tables = Table.count
+    @available_tables = Table.available.count
+    @occupied_tables = Table.occupied.count
+    
+    # Feedback statistics
+    @total_feedbacks = Feedback.count
+    @feedbacks_by_rating = Feedback.group(:rating).count
+    
+    # Calculate revenue statistics
+    @total_revenue = Order.completed.sum(:total_amount)
+    @recent_revenue = Order.completed.where('created_at >= ?', 7.days.ago).sum(:total_amount)
   end
   
   def destroy
