@@ -1,0 +1,39 @@
+{
+  "name": "Ruby on Rails",
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.3-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    },
+    "ghcr.io/devcontainers/features/sqlite:1": {
+      "version": "latest"
+    }
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Rails Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "bundle install && rails db:migrate",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "shopify.ruby-lsp",
+        "rebornix.ruby",
+        "misogi.ruby-rubocop",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "ruby.useBundler": true,
+        "ruby.useLanguageServer": true,
+        "ruby.lint": {
+          "rubocop": true
+        },
+        "ruby.format": "rubocop"
+      }
+    }
+  },
+  "remoteUser": "vscode"
+}
