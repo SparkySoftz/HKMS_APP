@@ -171,5 +171,20 @@
             </a>
         </div>
     </div>
+    
+    <script>
+        // Auto-submit form when customer name is entered and Enter is pressed
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('customer_name');
+            nameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (nameInput.value.trim() !== '') {
+                        this.closest('form').submit();
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

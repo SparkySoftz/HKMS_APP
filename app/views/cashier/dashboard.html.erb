@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= form_authenticity_token %>">
     <title>Cashier Dashboard - HKMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -11,13 +12,32 @@
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 2rem 1rem;
+            padding: 0;
             color: white;
         }
         
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #ffc107 !important;
         }
         
         .dashboard-header {
@@ -246,6 +266,39 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-cash-register"></i> HKMS Cashier Panel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="<%= cashier_dashboard_path %>">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-info me-2" onclick="location.reload()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%= admin_login_path %>">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
     <div class="container">
         <div class="dashboard-header">
             <h1 class="dashboard-title">
@@ -382,6 +435,10 @@
         </div>
     </div>
     
+    <!-- Modal Container for Bill Details -->
+    <div id="billDetailsModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    </div>
+    
     <script>
         // Auto-refresh dashboard every 30 seconds
         let refreshInterval;
@@ -399,12 +456,47 @@
         }
         
         function viewBillDetails(orderId) {
-            // In a real implementation, this would open a modal with bill details
-            alert('Viewing bill details for order #' + orderId);
+            fetch('/cashier/bill_details/' + orderId)
+                .then(response => response.text())
+                .then(html => {
+                    // Create modal container if it doesn't exist
+                    let modalContainer = document.getElementById('billDetailsModal');
+                    if (!modalContainer) {
+                        modalContainer = document.createElement('div');
+                        modalContainer.id = 'billDetailsModal';
+                        modalContainer.className = 'modal fade';
+                        modalContainer.tabIndex = -1;
+                        modalContainer.setAttribute('aria-hidden', 'true');
+                        document.body.appendChild(modalContainer);
+                    }
+                    
+                    // Update modal content
+                    modalContainer.innerHTML = `
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content bg-dark text-white">
+                                ${html}
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Show modal
+                    const modal = new bootstrap.Modal(modalContainer);
+                    modal.show();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching bill details.');
+                });
         }
         
         function generateBill(orderId) {
             if (confirm('Generate and print bill for this order?')) {
+                // Find the button that triggered this action
+                const button = event.target.closest('button');
+                const originalButtonText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                button.disabled = true;
+                
                 fetch('/cashier/generate_bill/' + orderId, {
                     method: 'GET',
                     headers: {
@@ -419,16 +511,27 @@
                         printBill(orderId);
                     } else {
                         alert('Failed to generate bill: ' + data.message);
+                        // Restore button state on failure
+                        button.innerHTML = originalButtonText;
+                        button.disabled = false;
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('An error occurred while generating the bill.');
+                    // Restore button state on error
+                    button.innerHTML = originalButtonText;
+                    button.disabled = false;
                 });
             }
         }
         
         function printBill(orderId) {
+            // Show loading indicator
+            const originalButtonText = event.target.innerHTML;
+            event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            event.target.disabled = true;
+            
             fetch('/cashier/print_bill/' + orderId, {
                 method: 'POST',
                 headers: {
@@ -439,6 +542,13 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    // Hide modal if it exists
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('billDetailsModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                    
+                    // Show success message
                     alert(data.message);
                     location.reload();
                 } else {
@@ -448,6 +558,11 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('An error occurred while printing the bill.');
+            })
+            .finally(() => {
+                // Restore button state
+                event.target.innerHTML = originalButtonText;
+                event.target.disabled = false;
             });
         }
         

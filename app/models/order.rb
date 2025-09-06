@@ -1,11 +1,13 @@
 class Order < ApplicationRecord
-  belongs_to :table
+  belongs_to :table, optional: true
   has_many :order_items, dependent: :destroy
   has_many :menu_items, through: :order_items
   has_one :feedback, dependent: :destroy
   
+  accepts_nested_attributes_for :order_items, allow_destroy: true
+  
   validates :customer_name, presence: true
-  validates :status, inclusion: { in: %w[pending cooking ready completed cancelled] }
+  validates :status, inclusion: { in: %w[pending cooking ready completed cancelled draft] }
   validates :total_amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
   
   scope :pending, -> { where(status: 'pending') }

@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h4 class="modal-title">Bill Details - <%= order.order_number %></h4>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+  <div class="bill-details">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <strong>Order Number:</strong> <%= order.order_number %>
+      </div>
+      <div class="col-md-6">
+        <strong>Table:</strong> <%= order.table.table_number %>
+      </div>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <strong>Customer:</strong> <%= order.customer_name %>
+      </div>
+      <div class="col-md-6">
+        <strong>Date:</strong> <%= order.order_date.strftime("%Y-%m-%d %H:%M") %>
+      </div>
+    </div>
+    
+    <div class="bill-items-table">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="text-center">Qty</th>
+            <th class="text-end">Price</th>
+            <th class="text-end">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% bill_items.each do |item| %>
+            <tr>
+              <td><%= item.menu_item.name %></td>
+              <td class="text-center"><%= item.quantity %></td>
+              <td class="text-end">LKR <%= item.unit_price %></td>
+              <td class="text-end">LKR <%= item.subtotal %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="bill-summary text-end">
+      <div class="row">
+        <div class="col-md-8 offset-md-4">
+          <div class="bill-total">
+            <h5><strong>Total Amount: LKR <%= order.total_amount %></strong></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  <button type="button" class="btn btn-success" onclick="printBill(<%= order.id %>)">
+    <i class="fas fa-print"></i> Print Bill
+  </button>
+</div>

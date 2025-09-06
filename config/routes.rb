@@ -54,6 +54,13 @@ Rails.application.routes.draw do
   post 'cashier/print_bill/:id', to: 'cashier#print_bill', as: 'cashier_print_bill'
   get 'cashier/bill_details/:id', to: 'cashier#bill_details', as: 'cashier_bill_details'
   
+  # Direct order routes
+  resources :orders, only: [:new, :create] do
+    member do
+      get :confirmation
+    end
+  end
+  
   # Set root path to splash screen
   root 'splash#index'
 

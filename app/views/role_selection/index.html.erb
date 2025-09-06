@@ -93,6 +93,7 @@
         .accountant-card { border-left: 5px solid #a8e6cf; }
         .storekeeper-card { border-left: 5px solid #ff8b94; }
         .cashier-card { border-left: 5px solid #c7ceea; }
+        .direct-order-card { border-left: 5px solid #ff9a8b; }
         
         @keyframes fadeInDown {
             from {
@@ -123,6 +124,7 @@
         .role-card:nth-child(4) { animation-delay: 0.4s; }
         .role-card:nth-child(5) { animation-delay: 0.5s; }
         .role-card:nth-child(6) { animation-delay: 0.6s; }
+        .role-card:nth-child(7) { animation-delay: 0.7s; }
         
         @media (max-width: 768px) {
             .header h1 {
@@ -187,6 +189,12 @@
                 <div class="role-title">Cashier</div>
                 <div class="role-description">Process payments and transactions</div>
             </div>
+            
+            <div class="role-card direct-order-card" onclick="selectRole('direct_order')">
+                <i class="fas fa-shopping-cart role-icon"></i>
+                <div class="role-title">Place an Order</div>
+                <div class="role-description">Place an order without registration</div>
+            </div>
         </div>
     </div>
     
@@ -206,6 +214,15 @@
                 } else if (role === 'manager') {
                     // Redirect to manager dashboard for menu management
                     window.location.href = '/manager/dashboard';
+                } else if (role === 'cashier') {
+                    // Redirect to cashier dashboard
+                    window.location.href = '/cashier/dashboard';
+                } else if (role === 'customer') {
+                    // Redirect to customer table selection
+                    window.location.href = '/customer/table_selection';
+                } else if (role === 'direct_order') {
+                    // Redirect to direct order placement
+                    window.location.href = '/orders/new';
                 } else {
                     // For other roles, show alert for now
                     alert(`Selected role: ${role.replace('_', ' ').toUpperCase()}\n\nThis will be implemented soon!`);

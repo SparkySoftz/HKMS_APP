@@ -1,5 +1,5 @@
 class CustomerController < ApplicationController
-  before_action :ensure_customer_session, except: [:login, :table_selection, :qr_scan]
+  before_action :ensure_customer_session, except: [:login, :table_selection, :qr_scan, :select_table]
   
   def login
     # Customer login page
@@ -11,7 +11,7 @@ class CustomerController < ApplicationController
   
   def select_table
     @table = Table.find(params[:table_id])
-    if @table.available?
+    if @table.status == 'available'
       session[:table_id] = @table.id
       session[:customer_name] = params[:customer_name]
       redirect_to customer_menu_path
@@ -24,7 +24,7 @@ class CustomerController < ApplicationController
     @qr_code = params[:qr_code]
     @table = Table.find_by(qr_code: @qr_code)
     
-    if @table && @table.available?
+    if @table && @table.status == 'available'
       session[:table_id] = @table.id
       redirect_to customer_login_path
     else
